@@ -44,10 +44,10 @@ public class CatalogController {
         return serviceProduct.getProductById(id);
     }
     
-    /*@GetMapping("/product")
+    @GetMapping("/product")
     public List<Product> findAllProducts(){
         return serviceProduct.findAll();
-    */
+    }
     
     @DeleteMapping("/product")
     public void deleteProduct(Long id){// also RequestParam?
