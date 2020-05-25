@@ -36,8 +36,8 @@ public class CatalogController {
     private CharacteristicService serviceCharacteristic;
      
     @PostMapping(value = "/product", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Long saveProduct(@RequestBody Product product) throws InvalidEntityException{
-        return serviceProduct.save(product);
+    public String saveProduct(@RequestBody Product product) throws InvalidEntityException{
+        return serviceProduct.save(product).toString();
     }
     
     @GetMapping("/find/product")

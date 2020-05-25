@@ -8,7 +8,6 @@ import com.mycompany.app.model.Product;
 import com.mycompany.app.services.ProductService;
 import java.net.URI;
 import java.net.URISyntaxException;
-import javax.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
