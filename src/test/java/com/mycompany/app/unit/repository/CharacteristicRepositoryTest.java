@@ -1,8 +1,8 @@
 package com.mycompany.app.unit.repository;
 
-import com.mycompany.app.exceptions.InvalidEntityException;
-import com.mycompany.app.model.Characteristic;
-import com.mycompany.app.repository.CharacteristicRepository;
+import com.mycompany.catalog.exceptions.InvalidEntityException;
+import com.mycompany.catalog.model.Characteristic;
+import com.mycompany.catalog.repository.CharacteristicRepository;
 import javax.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

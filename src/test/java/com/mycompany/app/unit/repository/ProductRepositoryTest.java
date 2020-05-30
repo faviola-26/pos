@@ -1,7 +1,7 @@
 package com.mycompany.app.unit.repository;
 
-import com.mycompany.app.model.Product;
-import com.mycompany.app.repository.ProductRepository;
+import com.mycompany.catalog.model.Product;
+import com.mycompany.catalog.repository.ProductRepository;
 import java.util.Optional;
 import javax.annotation.Resource;
 import javax.validation.ConstraintViolationException;

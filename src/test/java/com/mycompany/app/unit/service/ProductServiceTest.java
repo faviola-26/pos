@@ -1,10 +1,10 @@
 
 package com.mycompany.app.unit.service;
 
-import com.mycompany.app.exceptions.InvalidEntityException;
-import com.mycompany.app.model.Product;
-import com.mycompany.app.repository.ProductRepository;
-import com.mycompany.app.services.ProductService;
+import com.mycompany.catalog.exceptions.InvalidEntityException;
+import com.mycompany.catalog.model.Product;
+import com.mycompany.catalog.repository.ProductRepository;
+import com.mycompany.catalog.services.ProductService;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import javax.validation.ConstraintViolationException;

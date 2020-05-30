@@ -1,10 +1,10 @@
 package com.mycompany.app.unit.repository;
 
-import com.mycompany.app.exceptions.EntityNotFoundException;
-import com.mycompany.app.exceptions.InvalidEntityException;
-import com.mycompany.app.exceptions.NoSingleResultException;
-import com.mycompany.app.model.Category;
-import com.mycompany.app.repository.CategoryRepository;
+import com.mycompany.catalog.exceptions.EntityNotFoundException;
+import com.mycompany.catalog.exceptions.InvalidEntityException;
+import com.mycompany.catalog.exceptions.NoSingleResultException;
+import com.mycompany.catalog.model.Category;
+import com.mycompany.catalog.repository.CategoryRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

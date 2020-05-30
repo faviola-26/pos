@@ -1,7 +1,7 @@
 package com.mycompany.app.conf;
 
-import com.mycompany.app.model.Category;
-import com.mycompany.app.model.Product;
+import com.mycompany.catalog.model.Category;
+import com.mycompany.catalog.model.Product;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 
