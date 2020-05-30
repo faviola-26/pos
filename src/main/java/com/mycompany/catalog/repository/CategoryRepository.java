@@ -97,7 +97,7 @@ public class CategoryRepository{
     
     public void initialize(Category parent){
         for(Category child : parent.getSubCategories()){
-            if(child.getSubCategories() != null){
+            if(!child.getSubCategories().isEmpty()){
                 initialize(child);
             }
         }

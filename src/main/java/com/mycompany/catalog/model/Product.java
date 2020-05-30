@@ -1,7 +1,10 @@
 package com.mycompany.catalog.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,26 +44,11 @@ public class Product implements Serializable{
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private List<ProductCharacteristic> characteristics;
     
-    @JsonIgnore
-    private static final long serialVersionUID = 1L;
+    @JsonProperty("id")
+    public void unpackNested(Integer id) {
+        this.id = Integer.toUnsignedLong(id);
+    }
 
-    public Product(Long id, String name, String description, Category category) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.category = category;
-    }
-    
-    public Product(){}
-    
-    @Override
-    public String toString(){
-        return new StringBuilder().append("Id = ").append(this.id)
-                                  .append("Name = ").append(this.name)
-                                  .append("Description = ").append(this.description)
-                                  .toString();
-    }
-    
     public Long getId() {
         return id;
     }
@@ -93,10 +81,12 @@ public class Product implements Serializable{
         this.category = category;
     }
 
+    @JsonSerialize(as = ArrayList.class)
     public List<ProductCharacteristic> getCharacteristics() {
         return characteristics;
     }
 
+    @JsonDeserialize(as = ArrayList.class)
     public void setCharacteristics(List<ProductCharacteristic> characteristics) {
         this.characteristics = characteristics;
     }

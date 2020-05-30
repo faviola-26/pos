@@ -1,4 +1,4 @@
-package com.mycompany.app.unit.controller;
+package com.mycompany.catalog.unit.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -8,8 +8,15 @@ import com.mycompany.catalog.model.Product;
 import com.mycompany.catalog.services.ProductService;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.logging.Logger;
+import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,9 +26,20 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@TestInstance(Lifecycle.PER_CLASS)
 public class CatalogControllerTest {  
+    
     @LocalServerPort
     private int port;
     
@@ -31,8 +49,10 @@ public class CatalogControllerTest {
     @Autowired
     private Product product;
     
+    private MockMvc mvc;
+    
     @Autowired
-    private TestRestTemplate rest;
+    private WebApplicationContext webApplicationContext;
     
     @MockBean
     private ProductService service;
@@ -48,24 +68,24 @@ public class CatalogControllerTest {
         product.setDescription("Formal footware");
         mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
         mapper.enable(DeserializationFeature.USE_LONG_FOR_INTS);
-        mapper.disable(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES);
     }
     
+    @BeforeAll
+    public void setUp() {
+        this.mvc = webAppContextSetup(webApplicationContext).build();
+    }
+  
     @Test
-    public void given_product_has_id_when_saving_then_should_fail() throws InvalidEntityException, URISyntaxException, JsonProcessingException{
+    public void given_product_has_id_when_saving_then_should_fail() throws InvalidEntityException, URISyntaxException, JsonProcessingException, Exception{
         //given
         product.setId(Long.valueOf("1"));
-        when(service.save(product)).thenThrow(InvalidEntityException.class);
+        when(service.save(any(Product.class))).thenThrow(InvalidEntityException.class);
         
-        int expected = 403;
-        
-        var uri = new URI(this.getEndPointSaveProduct());
-        var headers = new HttpHeaders();
-        headers.set("Content-Type", "application/json");
-        var entity = new HttpEntity<Product>(headers);
-        var response = rest.postForEntity(uri, entity, Product.class);
-        
-        //Assertions.assertEquals(expected, response.());
+        mvc.perform(post(this.getEndPointSaveProduct())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(product))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnprocessableEntity());
     }
     
     @Test

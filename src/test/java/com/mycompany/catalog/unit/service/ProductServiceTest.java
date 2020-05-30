@@ -1,5 +1,5 @@
 
-package com.mycompany.app.unit.service;
+package com.mycompany.catalog.unit.service;
 
 import com.mycompany.catalog.exceptions.InvalidEntityException;
 import com.mycompany.catalog.model.Product;

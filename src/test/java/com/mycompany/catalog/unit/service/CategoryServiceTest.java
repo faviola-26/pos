@@ -1,4 +1,4 @@
-package com.mycompany.app.unit.service;
+package com.mycompany.catalog.unit.service;
 
 import com.mycompany.catalog.exceptions.EntityNotFoundException;
 import com.mycompany.catalog.exceptions.InvalidEntityException;

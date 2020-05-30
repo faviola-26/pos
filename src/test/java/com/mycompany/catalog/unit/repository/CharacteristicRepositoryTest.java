@@ -1,4 +1,4 @@
-package com.mycompany.app.unit.repository;
+package com.mycompany.catalog.unit.repository;
 
 import com.mycompany.catalog.exceptions.InvalidEntityException;
 import com.mycompany.catalog.model.Characteristic;

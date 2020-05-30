@@ -1,4 +1,4 @@
-package com.mycompany.app.conf;
+package com.mycompany.catalog.conf;
 
 import com.mycompany.catalog.model.Category;
 import com.mycompany.catalog.model.Product;

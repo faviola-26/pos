@@ -1,7 +1,10 @@
 package com.mycompany.catalog.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,11 +36,9 @@ public class Category implements Serializable{
     private Long id;
     
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Category.class)
-    @JsonBackReference
     private List<Category> subCategories;
     
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = true)    
-    @JsonBackReference
     private Category ancestor;
     
     @Column(length = 50, nullable = false)
@@ -68,10 +69,12 @@ public class Category implements Serializable{
         this.name = name;
     }
 
+    @JsonSerialize(as = ArrayList.class)
     public List<Category> getSubCategories() {
         return subCategories;
     }
 
+    @JsonDeserialize(as = ArrayList.class)
     public void setSubCategories(List<Category> subCategories) {
         this.subCategories = subCategories;
     }

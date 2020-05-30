@@ -1,10 +1,11 @@
-package com.mycompany.app.unit.repository;
+package com.mycompany.catalog.unit.repository;
 
 import com.mycompany.catalog.exceptions.EntityNotFoundException;
 import com.mycompany.catalog.exceptions.InvalidEntityException;
 import com.mycompany.catalog.exceptions.NoSingleResultException;
 import com.mycompany.catalog.model.Category;
 import com.mycompany.catalog.repository.CategoryRepository;
+import java.util.logging.Logger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,10 +56,7 @@ public class CategoryRepositoryTest {
             name += "a";
         }
         root.setName(name);
-        Assertions.assertThrows(InvalidEntityException.class, ()->{ 
-            //when
-            repository.save(root);
-        });
+        var ex = Assertions.assertThrows(InvalidEntityException.class, ()->repository.save(root));
     }
     
     @Test
@@ -84,8 +82,7 @@ public class CategoryRepositoryTest {
         //then
         Assertions.assertAll(()-> Assertions.assertEquals(1, result.getId()),
                              ()-> Assertions.assertEquals("footware", result.getName()),
-                             ()-> Assertions.assertEquals(null, result.getAncestor()),
-                             ()-> Assertions.assertEquals(0, result.getSubCategories().size()));
+                             ()-> Assertions.assertEquals(null, result.getAncestor()));   
     }
     
     @Test
@@ -95,6 +92,8 @@ public class CategoryRepositoryTest {
         root.setId(id);
         //when
         Category result = repository.findSubTreeById(id);
+        Logger.getGlobal().info(result.getName());
+                
         //then
         Assertions.assertAll(()-> Assertions.assertEquals(root.getId(), result.getId()),
                              ()-> Assertions.assertEquals(root.getName(), result.getName()),
