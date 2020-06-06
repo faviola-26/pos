@@ -89,7 +89,5 @@ public class Product implements Serializable{
     @JsonDeserialize(as = ArrayList.class)
     public void setCharacteristics(List<ProductCharacteristic> characteristics) {
         this.characteristics = characteristics;
-    }
-    
-    
+    }  
 }

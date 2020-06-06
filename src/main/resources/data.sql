@@ -1,4 +1,3 @@
-
 INSERT INTO product_category(id, name, ancestor_id) values (null, 'footware', null);
 INSERT INTO product_category(id, name, ancestor_id) values (null, 'kids', 1);
 INSERT INTO product_category(id, name, ancestor_id) values (null, 'woman', 1);

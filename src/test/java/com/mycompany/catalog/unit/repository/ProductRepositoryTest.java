@@ -151,8 +151,5 @@ public class ProductRepositoryTest {
         Optional<Product> result = repository.findById(saved.getId());
         //then
         Assertions.assertTrue(result.isPresent());
-    }
-    
-    
-    
+    }   
 }

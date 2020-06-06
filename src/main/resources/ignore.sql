@@ -42,4 +42,3 @@ CREATE TABLE IF NOT EXISTS assinged_characteristic_product(
     FOREIGN KEY(characteristic_id) REFERENCES product_characteristic(id),
     FOREIGN KEY(product_id) REFERENCES product(id)
 );
-

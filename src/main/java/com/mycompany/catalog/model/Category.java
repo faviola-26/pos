@@ -85,7 +85,5 @@ public class Category implements Serializable{
 
     public void setAncestor(Category ancestor) {
         this.ancestor = ancestor;
-    }
-    
-    
+    }   
 }
