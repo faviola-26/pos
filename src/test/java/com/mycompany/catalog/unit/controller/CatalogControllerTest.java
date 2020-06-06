@@ -1,4 +1,3 @@
-
 package com.mycompany.catalog.unit.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
