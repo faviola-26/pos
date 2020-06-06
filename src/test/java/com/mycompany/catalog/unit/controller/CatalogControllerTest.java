@@ -76,7 +76,7 @@ public class CatalogControllerTest {
     }
   
     @Test
-    public void given_product_has_id_when_saving_then_should_fail() throws Exception{
+    public void given_product_has_id_when_saving_then_should_fail() throws InvalidEntityException, URISyntaxException, JsonProcessingException, Exception{
         //given
         product.setId(Long.valueOf("1"));
         when(service.save(any(Product.class))).thenThrow(InvalidEntityException.class);
@@ -89,46 +89,9 @@ public class CatalogControllerTest {
     }
     
     @Test
-    public void given_product_name_hasnt_min_value_when_saving_then_should_fail(){
+    public void given_product_hasnt_id_when_saving_then_should_pass(){
         //given
         
-    }
-    
-    
-    @Test
-    public void given_product_name_hasnt_max_value_when_saving_then_should_fail(){
-       
-    }
-    
-    
-    @Test
-    public void given_product_description_hasnt_max_value_when_saving_then_should_fail(){
-        
-    }
-    
-    @Test
-    public void given_user_provides_no_id_when_request_product_then_should_fail(){
-        
-    }
-    
-    @Test
-    public void given_user_provides_non_existent_id_when_request_product_then_should_fail(){
-        
-    }
-    
-    @Test
-    public void given_product_hasnt_id_when_saving_then_should_pass() throws Exception{
-        //given
-        /*Long id = null;
-        product.setId(id);
-        when(service.save(any(Product.class))).thenReturn(id);
-        
-        mvc.perform(post(this.getEndPointSaveProduct())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(product))
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect();
-     */   
     }
     
 }

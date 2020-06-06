@@ -105,8 +105,5 @@ public class Characteristic implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-
-    
+    }   
 }

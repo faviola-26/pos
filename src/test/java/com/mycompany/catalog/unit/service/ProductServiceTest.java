@@ -1,4 +1,3 @@
-
 package com.mycompany.catalog.unit.service;
 
 import com.mycompany.catalog.exceptions.InvalidEntityException;

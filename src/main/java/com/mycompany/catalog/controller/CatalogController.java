@@ -1,33 +1,19 @@
 package com.mycompany.catalog.controller;
 
-import com.mycompany.catalog.exceptions.EntityNotFoundException;
-import com.mycompany.catalog.exceptions.EntityRemoveFailedException;
-import com.mycompany.catalog.exceptions.InvalidEntityException;
-import com.mycompany.catalog.exceptions.NoSingleResultException;
-import com.mycompany.catalog.model.Category;
-import com.mycompany.catalog.model.Characteristic;
-import com.mycompany.catalog.model.Product;
-import com.mycompany.catalog.services.CategoryService;
-import com.mycompany.catalog.services.CharacteristicService;
-import com.mycompany.catalog.services.ProductService;
+import com.mycompany.catalog.exceptions.*;
+import com.mycompany.catalog.model.*;
+import com.mycompany.catalog.services.*;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/catalog")
 public class CatalogController {
+    
     @Autowired 
     private ProductService serviceProduct;
     
@@ -39,10 +25,8 @@ public class CatalogController {
      
     @PostMapping(value = "/product", consumes = MediaType.APPLICATION_JSON_VALUE, 
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public Long saveProduct(@RequestBody Product product) throws InvalidEntityException{
-        
-            return serviceProduct.save(product);
-        
+    public Long saveProduct(@RequestBody Product product) throws InvalidEntityException {
+        return serviceProduct.save(product);
     }
     
     @GetMapping("/find/product")
