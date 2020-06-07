@@ -158,7 +158,6 @@ public class ProductServiceTest {
         Long id = Long.valueOf("100");
         when(mockRepository.findById(id)).thenReturn(Optional.empty());
         Assertions.assertThrows(NoSuchElementException.class, ()->{
-            
             service.getProductById(id);
         });       
     }
