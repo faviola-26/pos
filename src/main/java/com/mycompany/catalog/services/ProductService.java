@@ -1,5 +1,6 @@
 package com.mycompany.catalog.services;
 
+import com.mycompany.catalog.exceptions.EntityNotFoundException;
 import com.mycompany.catalog.exceptions.InvalidEntityException;
 import com.mycompany.catalog.model.Product;
 import com.mycompany.catalog.repository.ProductRepository;
@@ -23,11 +24,11 @@ public class ProductService{
         }
     }
     
-    public Product getProductById(Long id) throws NoSuchElementException{
+    public Product getProductById(Long id) throws EntityNotFoundException{
         if(repository.findById(id).isPresent()){
             return repository.findById(id).get();
         }else{
-            throw new NoSuchElementException(ServiceErrors.PRODUCT_NOT_FOUND + id);
+            throw new EntityNotFoundException(ServiceErrors.PRODUCT_NOT_FOUND + id);
         }
     }
     
