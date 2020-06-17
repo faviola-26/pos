@@ -1,5 +1,6 @@
 package com.mycompany.catalog.unit.controller;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +21,6 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 import org.springframework.web.context.WebApplicationContext;
@@ -62,6 +62,7 @@ public class CatalogControllerTest {
         product.setDescription("Formal footware");
         mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
         mapper.enable(DeserializationFeature.USE_LONG_FOR_INTS);
+        mapper.setSerializationInclusion(Include.NON_NULL);
     }
   
     @Test
@@ -78,9 +79,15 @@ public class CatalogControllerTest {
     }
     
     @Test
-    public void given_product_hasnt_id_when_saving_then_should_pass(){
+    public void given_product_name_hasnt_min_when_saving_then_should_fail() throws InvalidEntityException, URISyntaxException, JsonProcessingException, Exception{
         //given
+        product.setName("a");
+        when(service.save(any(Product.class))).thenThrow(new InvalidEntityException("product name hast min value"));
         
+        mvc.perform(post(url.getSaveProduct())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(product)))
+                .andExpect(status().isUnprocessableEntity());
     }
     
 }
