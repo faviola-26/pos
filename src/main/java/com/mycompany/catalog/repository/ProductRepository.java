@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Transactional
 @Qualifier(value = "productRepository")
-public interface ProductRepository extends JpaRepository<Product, Long>{
+public interface ProductRepository extends JpaRepository<Product, Long>, CustomProductRepository{
     @Query("select P from Product P "
             + "join fetch Category C on C.id = P.category.id "
             + "where C.id = ?1")
@@ -23,4 +23,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
             + "where PC.characteristic.id in :ids "
             + "and PC.assocValue in :values ")
     public List<Product> findByCharacteristic(@Param("ids") List<Integer> ids, @Param("values") List<String> values);
+    
+    
 }

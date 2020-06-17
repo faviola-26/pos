@@ -1,5 +1,6 @@
 package com.mycompany.catalog.unit.service;
 
+import com.mycompany.catalog.exceptions.EntityNotFoundException;
 import com.mycompany.catalog.exceptions.InvalidEntityException;
 import com.mycompany.catalog.model.Product;
 import com.mycompany.catalog.repository.ProductRepository;
@@ -146,7 +147,7 @@ public class ProductServiceTest {
         //given
         Long id = null;
         when(mockRepository.findById(id)).thenReturn(Optional.empty());
-        Assertions.assertThrows(NoSuchElementException.class, ()->{ 
+        Assertions.assertThrows(EntityNotFoundException.class, ()->{ 
             //when
             service.getProductById(id);
         });
@@ -157,8 +158,7 @@ public class ProductServiceTest {
         //given
         Long id = Long.valueOf("100");
         when(mockRepository.findById(id)).thenReturn(Optional.empty());
-        Assertions.assertThrows(NoSuchElementException.class, ()->{
-            
+        Assertions.assertThrows(EntityNotFoundException.class, ()->{
             service.getProductById(id);
         });       
     }

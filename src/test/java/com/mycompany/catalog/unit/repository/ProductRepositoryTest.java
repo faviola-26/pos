@@ -1,5 +1,6 @@
 package com.mycompany.catalog.unit.repository;
 
+import com.mycompany.catalog.exceptions.InvalidEntityException;
 import com.mycompany.catalog.model.Product;
 import com.mycompany.catalog.repository.ProductRepository;
 import java.util.Optional;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 
 @SpringBootTest
@@ -152,4 +154,36 @@ public class ProductRepositoryTest {
         //then
         Assertions.assertTrue(result.isPresent());
     }   
+    
+    @Test
+    public void given_user_not_valid_id_when_delete_product_then_should_fail(){
+        Long id = Long.parseLong("100");
+        
+        Assertions.assertThrows(EmptyResultDataAccessException.class, ()->{
+            repository.deleteById(id);
+        });
+    }
+    
+    @Test
+    public void given_user_null_id_when_delete_product_then_should_fail(){
+        Long id = null;
+        
+        Assertions.assertThrows(InvalidDataAccessApiUsageException.class, ()->{
+            repository.deleteById(id);
+        });
+    }
+    
+    @Test
+    public void given_user_name_hasnt_max_value_when_update_product_then_should_fail(){
+        String name = "";
+        
+        for(int i = 0; i < 102; i++){
+            name += "a";
+        }
+        product.setName(name);
+        
+        Assertions.assertThrows(InvalidEntityException.class, ()->{
+            repository.update(product);
+        });
+    }
 }

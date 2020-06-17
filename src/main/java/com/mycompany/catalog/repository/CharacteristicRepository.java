@@ -13,19 +13,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
-import javax.persistence.PersistenceException;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class CharacteristicRepository {
     @Autowired
     private EntityManagerFactory factory;
-    
-    @Autowired
-    private ApplicationContext context;
     
     public Characteristic save(Characteristic characteristic) throws InvalidEntityException{
         EntityManager manager = factory.createEntityManager();
