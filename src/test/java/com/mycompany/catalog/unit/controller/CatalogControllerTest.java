@@ -9,7 +9,6 @@ import com.mycompany.catalog.model.Product;
 import com.mycompany.catalog.services.ProductService;
 import com.mycompany.catalog.util.URL;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,8 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -26,7 +27,9 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@TestInstance(Lifecycle.PER_CLASS)
+@ActiveProfiles("test")
+@TestPropertySource(locations="classpath:test_catalog.properties")
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CatalogControllerTest {  
     
     @LocalServerPort
@@ -136,7 +139,7 @@ public class CatalogControllerTest {
         Long id = null;
         when(service.getProductById(id)).thenThrow(EntityNotFoundException.class);
         
-        mvc.perform(get("!")
+        mvc.perform(get(url.getFindProductById(id))
                .contentType(MediaType.APPLICATION_JSON)
                .accept(MediaType.APPLICATION_JSON))
                .andExpect(status().isUnprocessableEntity());

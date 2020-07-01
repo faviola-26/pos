@@ -15,7 +15,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 import javax.validation.ConstraintViolationException;
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
@@ -81,11 +83,14 @@ public class CategoryRepository{
     }
     
     public Category findSubTreeById(Long parentId) throws EntityNotFoundException, NoSingleResultException{
+        EntityManager manager;
+        
         try{
             Optional<Category> category = this.findById(parentId);
             if(category.isPresent()){
+                manager = factory.createEntityManager();
                 Category result = category.get();
-                initialize(result);
+                this.initialize(result);
                 return result;
             }else{
                 throw new EntityNotFoundException(RepositoryErrors.ENTITY_NOT_FOUND_BY_ID + parentId);

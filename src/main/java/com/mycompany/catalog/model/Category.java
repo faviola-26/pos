@@ -35,22 +35,18 @@ public class Category implements Serializable{
     @Column(insertable = false, updatable = false)
     private Long id;
     
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Category.class)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, targetEntity = Category.class)
     private List<Category> subCategories;
-    
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = true)    
-    private Category ancestor;
     
     @Column(length = 50, nullable = false)
     @NotNull
-    @Size(min = 3, max = 50, message = "")
+    @Size(min = 3, max = 50, message = "name out of range 3 <= name <= 50")
     private String name;
     
     public void initialize(Category category){
         this.id = category.getId();
         this.name = category.getName();
         this.subCategories = category.getSubCategories();
-        this.ancestor = category.getAncestor();
     }
     
     public Long getId() {
@@ -78,12 +74,5 @@ public class Category implements Serializable{
     public void setSubCategories(List<Category> subCategories) {
         this.subCategories = subCategories;
     }
-
-    public Category getAncestor() {
-        return ancestor;
-    }
-
-    public void setAncestor(Category ancestor) {
-        this.ancestor = ancestor;
-    }   
+  
 }

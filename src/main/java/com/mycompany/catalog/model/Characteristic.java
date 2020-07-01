@@ -46,7 +46,7 @@ public class Characteristic implements Serializable {
     @NotEmpty
     private String format;
     
-    @Column(nullable = false)
+    @Column(name="value_interpreter",nullable = false)
     @Min(value = 1)
     @Max(value = 10)
     @NotNull
