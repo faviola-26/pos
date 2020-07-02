@@ -3,7 +3,9 @@ package com.mycompany.catalog.unit.repository;
 import com.mycompany.catalog.exceptions.InvalidEntityException;
 import com.mycompany.catalog.model.Product;
 import com.mycompany.catalog.repository.ProductRepository;
+import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Assertions;
@@ -13,8 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
+@ActiveProfiles("test")
+@TestPropertySource(locations = "classpath:test_catalog.properties")
 public class ProductRepositoryTest {
     @Autowired
     private Product product;
@@ -147,13 +153,46 @@ public class ProductRepositoryTest {
     
     @Test
     public void given_user_provides_an_existent_id_when_request_product_then_should_pass(){
-        //given
-        Product saved = repository.save(product);
+        Long id = Long.valueOf("1");
         //when
-        Optional<Product> result = repository.findById(saved.getId());
+        Optional<Product> result = repository.findById(id);
         //then
         Assertions.assertTrue(result.isPresent());
     }   
+    //////////////////////////////////////////////////////////
+    @Test
+    public void given_user_list_when_request_all_products_then_should_pass(){
+        //given
+        
+        //when
+        List<Product> result = repository.findAll();
+        //then
+        Assertions.assertEquals(1, result.size());
+    }
+    
+    @Test
+    public void given_products_by_category_id_when_request_products_then_should_fail(){
+        
+        Assertions.assertThrows(ConstraintViolationException.class, ()->{
+            repository.findByCategory(Long.MAX_VALUE);
+        });
+            
+    }
+    
+    @Test
+    public void given_products_by_category_id_when_request_products_then_should_pass(){
+        
+    }
+    
+    @Test
+    public void given_products_by_characteristics_id_when_request_products_then_should_fail(){
+        
+    }
+    
+    @Test
+    public void given_products_by_characteristics_id_when_request_products_then_should_pass(){
+        
+    }
     
     @Test
     public void given_user_not_valid_id_when_delete_product_then_should_fail(){

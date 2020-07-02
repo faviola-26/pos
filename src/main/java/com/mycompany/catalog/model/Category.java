@@ -13,11 +13,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
@@ -32,14 +29,11 @@ public class Category implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Null(message = "Id not assignable")
-    @Column(insertable = false, updatable = false)
+    @Column(updatable = false)
     private Long id;
     
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Category.class)
     private List<Category> subCategories;
-    
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = true)    
-    private Category ancestor;
     
     @Column(length = 50, nullable = false)
     @NotNull
@@ -50,7 +44,6 @@ public class Category implements Serializable{
         this.id = category.getId();
         this.name = category.getName();
         this.subCategories = category.getSubCategories();
-        this.ancestor = category.getAncestor();
     }
     
     public Long getId() {
@@ -78,12 +71,4 @@ public class Category implements Serializable{
     public void setSubCategories(List<Category> subCategories) {
         this.subCategories = subCategories;
     }
-
-    public Category getAncestor() {
-        return ancestor;
-    }
-
-    public void setAncestor(Category ancestor) {
-        this.ancestor = ancestor;
-    }   
 }

@@ -9,8 +9,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
+@ActiveProfiles("test")
+@TestPropertySource(locations = "classpath:test_catalog.properties")
 public class CharacteristicRepositoryTest {
     @Autowired
     private Characteristic characteristic;
@@ -25,7 +29,7 @@ public class CharacteristicRepositoryTest {
         characteristic.setFormat("text");
         characteristic.setType(1);
         characteristic.setValueInterpreter(1);
-        characteristic.setDescription("good shoe");
+        characteristic.setDescription("shoe cover");
     }
     
     @Test
@@ -58,7 +62,7 @@ public class CharacteristicRepositoryTest {
         //given
         String format = "";
         
-        for(int i = 0; i < 17; i++){
+        for(int i = 0; i < 52; i++){
             format += "a";
         }
         characteristic.setFormat(format);

@@ -11,8 +11,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
+@ActiveProfiles("test")
+@TestPropertySource(locations = "classpath:test_catalog.properties")
 public class CategoryRepositoryTest {
     @Autowired
     private Category root;
@@ -24,7 +28,6 @@ public class CategoryRepositoryTest {
     public void init(){
         root.setId(null);
         root.setName("footware");
-        root.setAncestor(null);
         root.setSubCategories(null);
     }
     
@@ -81,8 +84,7 @@ public class CategoryRepositoryTest {
         Category result = repository.findById(id).get();
         //then
         Assertions.assertAll(()-> Assertions.assertEquals(1, result.getId()),
-                             ()-> Assertions.assertEquals("footware", result.getName()),
-                             ()-> Assertions.assertEquals(null, result.getAncestor()));   
+                             ()-> Assertions.assertEquals("footware", result.getName()));   
     }
     
     @Test
@@ -97,7 +99,6 @@ public class CategoryRepositoryTest {
         //then
         Assertions.assertAll(()-> Assertions.assertEquals(root.getId(), result.getId()),
                              ()-> Assertions.assertEquals(root.getName(), result.getName()),
-                             ()-> Assertions.assertEquals(root.getAncestor(), result.getAncestor()),
                              ()-> Assertions.assertEquals(3, result.getSubCategories().size()));
     }
 }
