@@ -9,7 +9,6 @@ import com.mycompany.catalog.model.Product;
 import com.mycompany.catalog.services.ProductService;
 import com.mycompany.catalog.util.URL;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +27,9 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@TestInstance(Lifecycle.PER_CLASS)
 @ActiveProfiles("test")
-@TestPropertySource(locations = "classpath:test_catalog.properties")
+@TestPropertySource(locations="classpath:test_catalog.properties")
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CatalogControllerTest {  
     
     @LocalServerPort

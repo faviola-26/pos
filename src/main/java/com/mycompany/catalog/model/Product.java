@@ -12,7 +12,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -39,7 +38,7 @@ public class Product implements Serializable{
     @Size(min = 0, max = 100,message = "Description should have  n <= 100 char")
     private String description;
     
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
     private Category category;
     
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)

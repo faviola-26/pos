@@ -20,6 +20,7 @@ import org.springframework.test.context.TestPropertySource;
 @SpringBootTest
 @ActiveProfiles("test")
 @TestPropertySource(locations = "classpath:test_catalog.properties")
+
 public class CategoryServiceTest {
     @Autowired
     private Category category;

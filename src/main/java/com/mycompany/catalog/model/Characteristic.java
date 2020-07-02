@@ -1,13 +1,14 @@
 package com.mycompany.catalog.model;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -39,8 +40,8 @@ public class Characteristic implements Serializable {
     @NotNull
     private Integer type;
     
-    @Column(length = 50, nullable = false)
-    @Size(min = 4, max = 50, message = "")
+    @Column(length = 15, nullable = false)
+    @Size(min = 4, max = 15, message = "")
     @NotNull
     @NotEmpty
     private String format;
@@ -56,15 +57,7 @@ public class Characteristic implements Serializable {
     @NotNull
     @NotEmpty
     private String description;
-    
-    public enum Type{
-        NUMERIC, ALPHANUMERIC, DECIMAL, HEXADECIMAL, TEXT, ALPHABETIC
-    }
-    
-    public enum ValueInterpreter{
-        STRING, INTEGER, DOUBLE, DATE, TIME
-    }
-    
+
     public Integer getId() {
         return id;
     }

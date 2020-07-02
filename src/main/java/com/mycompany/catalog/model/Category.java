@@ -13,8 +13,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
@@ -29,15 +32,15 @@ public class Category implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Null(message = "Id not assignable")
-    @Column(updatable = false)
+    @Column(insertable = false, updatable = false)
     private Long id;
     
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Category.class)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, targetEntity = Category.class)
     private List<Category> subCategories;
     
     @Column(length = 50, nullable = false)
     @NotNull
-    @Size(min = 3, max = 50, message = "")
+    @Size(min = 3, max = 50, message = "name out of range 3 <= name <= 50")
     private String name;
     
     public void initialize(Category category){
