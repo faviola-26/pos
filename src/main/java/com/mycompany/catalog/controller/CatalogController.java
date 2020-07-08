@@ -1,7 +1,9 @@
 package com.mycompany.catalog.controller;
 
+import com.mycompany.catalog.model.Category;
+import com.mycompany.catalog.model.Characteristic;
+import com.mycompany.catalog.model.Product;
 import com.mycompany.catalog.exceptions.*;
-import com.mycompany.catalog.model.*;
 import com.mycompany.catalog.services.*;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

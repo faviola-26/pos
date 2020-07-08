@@ -1,13 +1,7 @@
 package com.mycompany.catalog.model;
 
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 @Entity
 @Table(name = "assinged_characteristic_product")
 public class ProductCharacteristic implements Serializable {
