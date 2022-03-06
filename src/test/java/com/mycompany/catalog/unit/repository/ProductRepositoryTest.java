@@ -5,13 +5,11 @@ import com.mycompany.catalog.model.Product;
 import com.mycompany.catalog.repository.ProductRepository;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -160,20 +158,34 @@ public class ProductRepositoryTest {
         //then
         Assertions.assertTrue(result.isPresent());
     }   
-    //////////////////////////////////////////////////////////
+
     @Test
     public void given_user_list_when_request_all_products_then_should_pass(){
         //given
-        
+        //does not apply
         //when
         List<Product> result = repository.findAll();
         //then
         Assertions.assertEquals(1, result.size());
     }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @Test
+    public void given_products_by_category_id_long_when_request_products_then_should_fail(){
+        //given
+        List<Product> result = repository.findByCategory(Long.valueOf(-1));
+        //then
+        Assertions.assertTrue(result.isEmpty());  
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Test
     public void given_products_by_category_id_when_request_products_then_should_fail(){
-               
+        //given
+        List<Product> result = repository.findByCategory(Long.valueOf(-1));
+        //then
+        Assertions.assertTrue(result.isEmpty());
+        
     }
     
     @Test

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 @Transactional
 @Qualifier(value = "productRepository")
 public interface ProductRepository extends JpaRepository<Product, Long>, CustomProductRepository{
+    
     @Query("select P from Product P "
             + "join fetch Category C on C.id = P.category.id "
             + "where C.id = ?1")

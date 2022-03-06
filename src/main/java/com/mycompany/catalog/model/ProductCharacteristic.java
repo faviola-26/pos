@@ -7,8 +7,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+@Scope(value = "prototype")
 @Entity
+@Component
 @Table(name = "assinged_characteristic_product")
 public class ProductCharacteristic implements Serializable {
     @Id
