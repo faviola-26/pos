@@ -18,6 +18,8 @@ public class URL {
         return HOST + port + CATALOG + PRODUCT;
     }
     
-    
+    public String getFindProductById(long id) {
+        return HOST + port + CATALOG + PRODUCT + FIND + PARAM_ID + String.valueOf(id);
+    }
    
 }
