@@ -37,7 +37,8 @@ public class CharacteristicRepository {
             manager.close();
         } 
     }
-    public Optional<Characteristic> findByName(String name) throws NoSingleResultException{
+    public Optional<Characteristic> 
+    findByName(String name) throws NoSingleResultException{
         EntityManager manager = factory.createEntityManager();
         
         var query = manager.createQuery("select C from Characteristic C where C.name = :name");
