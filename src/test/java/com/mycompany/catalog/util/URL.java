@@ -21,5 +21,8 @@ public class URL {
     public String getFindProductById(long id) {
         return HOST + port + CATALOG + PRODUCT + FIND + PARAM_ID + String.valueOf(id);
     }
-   
+    
+    public String getFindProductByCategory(long id){
+        return HOST + port + CATALOG + PRODUCT + FIND + PARAM_ID + String.valueOf(id);
+    }
 }

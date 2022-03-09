@@ -45,10 +45,6 @@ public class ProductService{
     }
     
     public void update(Product product){
-        /*repository.getOne(product.getId()).setName(product.getName());
-        repository.getOne(product.getId()).setDescription(product.getDescription());
-        repository.getOne(product.getId()).setCategory(product.getCategory());
-        repository.getOne(product.getId()).setCharacteristics(product.getCharacteristics());*/
         repository.update(product);
     }
     
