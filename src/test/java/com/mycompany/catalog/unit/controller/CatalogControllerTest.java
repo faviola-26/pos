@@ -66,7 +66,16 @@ public class CatalogControllerTest {
         product.setName("Shoe");
         product.setDescription("Formal footware");
     }
-  
+    
+    @Test //Favi
+    public void given_user_provides_an_existent_id_when_request_product_then_should_pass(){
+        //given
+        
+        when(service.save(product)).thenReturn(Long.MIN_VALUE);
+        
+        //mvc.perform(post(url.getSaveProduct()));
+    }
+    
     @Test
     public void given_product_has_id_when_saving_then_should_fail() throws Exception{
         //given
@@ -127,12 +136,6 @@ public class CatalogControllerTest {
                 .andExpect(status().isUnprocessableEntity());
     }
     
-    @Test /////////////////
-    public void given_user_provides_an_existent_id_when_request_product_then_should_pass(){
-        //given
-        
-    }
-    
     @Test
     public void given_user_provides_no_id_when_request_product_then_should_fail() throws Exception{
         //given
@@ -142,7 +145,7 @@ public class CatalogControllerTest {
         mvc.perform(get(url.getFindProductById(id))
                .contentType(MediaType.APPLICATION_JSON)
                .accept(MediaType.APPLICATION_JSON))
-               .andExpect(status().isUnprocessableEntity());
+               .andExpect(status().isNotFound());
     }
     
     @Test
@@ -154,7 +157,7 @@ public class CatalogControllerTest {
         mvc.perform(get(url.getFindProductById(id))
                .contentType(MediaType.APPLICATION_JSON)
                .accept(MediaType.APPLICATION_JSON))
-               .andExpect(status().isUnprocessableEntity());       
+               .andExpect(status().isNotFound());       
     }
     
     

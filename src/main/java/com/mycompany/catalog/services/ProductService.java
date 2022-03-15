@@ -6,7 +6,6 @@ import com.mycompany.catalog.model.Product;
 import com.mycompany.catalog.repository.ProductRepository;
 import com.mycompany.catalog.util.ServiceErrors;
 import java.util.List;
-import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
