@@ -8,10 +8,12 @@ import com.mycompany.catalog.exceptions.InvalidEntityException;
 import com.mycompany.catalog.model.Product;
 import com.mycompany.catalog.services.ProductService;
 import com.mycompany.catalog.util.URL;
+import java.util.Optional;
 import org.junit.jupiter.api.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -23,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -30,6 +33,7 @@ import org.springframework.web.context.WebApplicationContext;
 @ActiveProfiles("test")
 @TestPropertySource(locations="classpath:test_catalog.properties")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@AutoConfigureMockMvc
 public class CatalogControllerTest {  
     
     @LocalServerPort
@@ -53,7 +57,7 @@ public class CatalogControllerTest {
     
     @BeforeAll
     public void setUp() {
-        this.mvc = webAppContextSetup(webApplicationContext).build();
+        this.mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         url = new URL(port);
         mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
         mapper.enable(DeserializationFeature.USE_LONG_FOR_INTS);
@@ -142,7 +146,7 @@ public class CatalogControllerTest {
         Long id = null;
         when(service.getProductById(id)).thenThrow(EntityNotFoundException.class);
         
-        mvc.perform(get(url.getFindProductById(id))
+        mvc.perform(get(url.getProductById(id))
                .contentType(MediaType.APPLICATION_JSON)
                .accept(MediaType.APPLICATION_JSON))
                .andExpect(status().isNotFound());
@@ -151,10 +155,10 @@ public class CatalogControllerTest {
     @Test
     public void given_user_provides_non_existent_id_when_request_product_then_should_fail() throws Exception{
         //given
-        Long id = Long.valueOf("100");
+        Long id = Long.getLong("100");
         when(service.getProductById(id)).thenThrow(EntityNotFoundException.class);
         
-        mvc.perform(get(url.getFindProductById(id))
+        mvc.perform(get(url.getProductById(id))
                .contentType(MediaType.APPLICATION_JSON)
                .accept(MediaType.APPLICATION_JSON))
                .andExpect(status().isNotFound());       
