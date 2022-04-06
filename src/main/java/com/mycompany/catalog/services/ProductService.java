@@ -24,31 +24,22 @@ public class ProductService {
             throw new InvalidEntityException(ServiceErrors.ID_NOT_ASSIGNABLE);
         }
     }
-    /*public Product getProductById(Optional<Long> id) throws EntityNotFoundException {
-        if (id.isPresent()) {
-            if (repository.findById(id.get()).isPresent()) {
-                return repository.findById(id.get()).get();
-            } else {
-                throw new EntityNotFoundException(ServiceErrors.PRODUCT_NOT_FOUND + id);
-            }
+
+    public Product getProductById(Long id) throws EntityNotFoundException {
+        if (repository.findById(id).isPresent()) {
+            return repository.findById(id).get();
         } else {
             throw new EntityNotFoundException(ServiceErrors.PRODUCT_NOT_FOUND + id);
         }
-    }*/
-    public Product getProductById(Long id) throws EntityNotFoundException {
-        //if (id.isPresent()) {
-            if (repository.findById(id).isPresent()) {
-                return repository.findById(id).get();
-            } else {
-                throw new EntityNotFoundException(ServiceErrors.PRODUCT_NOT_FOUND + id);
-            }
-        /*} else {
-            throw new EntityNotFoundException(ServiceErrors.PRODUCT_NOT_FOUND + id);
-        }*/
     }
 
-    public List<Product> findByCategory(Long idCategory) {
-        return repository.findByCategory(idCategory);
+     public List<Product> findByCategory(Long idCategory) throws EntityNotFoundException{
+        if (!repository.findByCategory(idCategory).isEmpty()) {
+            return repository.findByCategory(idCategory);
+        } else {
+            throw new EntityNotFoundException(ServiceErrors.PRODUCT_NOT_FOUND + idCategory);
+        }
+        
     }
 
     public List<Product> findByCharacteristic(List<Integer> idCharacteristic, List<String> valuesCharacteristic) {

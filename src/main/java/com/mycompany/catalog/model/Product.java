@@ -15,7 +15,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import org.springframework.context.annotation.Scope;
@@ -29,7 +28,6 @@ public class Product implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Null(message = "Id not assignable")
-    //@NotNull(message = "Id not assignable")
     private Long id;
     
     @Column(length = 50, nullable = false)

@@ -8,7 +8,6 @@ INSERT INTO product_category(id, name) values (null, 'converse');
 INSERT INTO product_category_sub_categories(category_id, sub_categories_id) values (1, 2);
 INSERT INTO product_category_sub_categories(category_id, sub_categories_id) values (1, 3);
 INSERT INTO product_category_sub_categories(category_id, sub_categories_id) values (1, 4);
-
 INSERT INTO product_category_sub_categories(category_id, sub_categories_id) values (4, 5);
 INSERT INTO product_category_sub_categories(category_id, sub_categories_id) values (5, 6);
 
@@ -17,4 +16,3 @@ INSERT INTO product_characteristic(id, name, type, format, value_interpreter, de
 INSERT INTO product_characteristic(id, name, type, format, value_interpreter, description) values (null, 'Season', 6, 'season_name', 1, 'season of the year');
 
 INSERT INTO product(id, name, description, category_id) values (1, 'classic', 'classic model', 6);
-

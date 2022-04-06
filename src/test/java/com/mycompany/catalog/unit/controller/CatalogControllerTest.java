@@ -8,6 +8,7 @@ import com.mycompany.catalog.exceptions.InvalidEntityException;
 import com.mycompany.catalog.model.Product;
 import com.mycompany.catalog.services.ProductService;
 import com.mycompany.catalog.util.URL;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -72,12 +73,15 @@ public class CatalogControllerTest {
     }
     
     @Test //Favi
-    public void given_user_provides_an_existent_id_when_request_product_then_should_pass(){
-        //given
+    public void given_user_provides_a_product_when_saving_product_then_should_pass() throws Exception{
+
+        when(service.save(any(Product.class))).thenReturn(Long.getLong("1"));
         
-        when(service.save(product)).thenReturn(Long.MIN_VALUE);
-        
-        //mvc.perform(post(url.getSaveProduct()));
+        mvc.perform(post(url.getSaveProduct())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(product))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
     
     @Test
@@ -141,28 +145,73 @@ public class CatalogControllerTest {
     }
     
     @Test
-    public void given_user_provides_no_id_when_request_product_then_should_fail() throws Exception{
+    public void given_user_provides_an_id_when_request_product_by_id_then_should_pass() throws Exception{
+        Long id = Long.parseLong("1");
+
+        when(service.getProductById(id)).thenReturn(any(Product.class));
+        
+        mvc.perform(get(url.getFindProductById(id))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(product))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());               
+    }
+    
+    @Test
+    public void given_user_provides_no_id_when_request_product_by_id_then_should_fail() throws Exception{
         //given
         Long id = null;
         when(service.getProductById(id)).thenThrow(EntityNotFoundException.class);
         
-        mvc.perform(get(url.getProductById(id))
+        mvc.perform(get(url.getFindProductById(id))
                .contentType(MediaType.APPLICATION_JSON)
                .accept(MediaType.APPLICATION_JSON))
                .andExpect(status().isNotFound());
     }
     
     @Test
-    public void given_user_provides_non_existent_id_when_request_product_then_should_fail() throws Exception{
+    public void given_user_provides_non_existent_id_when_request_product_by_id_then_should_fail() throws Exception{
         //given
         Long id = Long.getLong("100");
         when(service.getProductById(id)).thenThrow(EntityNotFoundException.class);
         
-        mvc.perform(get(url.getProductById(id))
+        mvc.perform(get(url.getFindProductById(id))
                .contentType(MediaType.APPLICATION_JSON)
                .accept(MediaType.APPLICATION_JSON))
                .andExpect(status().isNotFound());       
     }
     
+    @Test
+    public void given_user_provides_an_id_when_request_product_by_category_id_then_should_pass(){
+        Long id = Long.parseLong("1");
+        
+        //when(service.findByCategory(id)).thenReturn(any(List<Product.class>));
+    }
     
+    @Test
+    public void given_user_provides_no_id_when_request_product_by_category_then_should_fail() throws Exception{
+        //given
+        Long id = null;
+        
+        when(service.findByCategory(id)).thenThrow(EntityNotFoundException.class);
+        
+        mvc.perform(get(url.getFindProductByCategory(id))
+               .contentType(MediaType.APPLICATION_JSON)
+               .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isNotFound());
+        
+    }
+    
+    @Test
+    public void given_user_provides_non_existent_id_when_request_product_by_category_then_should_fail() throws Exception{
+        //given
+        Long id = Long.getLong("100");
+        
+        when(service.findByCategory(id)).thenThrow(EntityNotFoundException.class);
+        
+        mvc.perform(get(url.getFindProductByCategory(id))
+               .contentType(MediaType.APPLICATION_JSON)
+               .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isNotFound());       
+    }
 }
