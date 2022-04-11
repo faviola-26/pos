@@ -41,12 +41,14 @@ public class CatalogController {
     }
     
     @GetMapping("/find/product/category")
-    public @ResponseBody List<Product> findProductByCategory(@RequestParam Long idCategory){
-        return serviceProduct.findByCategory(idCategory);
+    public @ResponseBody List<Product> findProductByCategory(@RequestParam Long id){
+        return serviceProduct.findByCategory(id);
     }
     
     @GetMapping("/find/product/characteristic")
-    public @ResponseBody List<Product> findProductByCharacteristic(@RequestParam List<Integer> idCharacteristic, @RequestParam List<String> valuesCharacteristic){
+    public @ResponseBody List<Product> findProductByCharacteristic(
+            @RequestParam(required=true) List<Integer> idCharacteristic, 
+            @RequestParam(required=true) List<String> valuesCharacteristic){
         return serviceProduct.findByCharacteristic(idCharacteristic, valuesCharacteristic);
     }
     

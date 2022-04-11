@@ -16,3 +16,7 @@ INSERT INTO product_characteristic(id, name, type, format, value_interpreter, de
 INSERT INTO product_characteristic(id, name, type, format, value_interpreter, description) values (null, 'Season', 6, 'season_name', 1, 'season of the year');
 
 INSERT INTO product(id, name, description, category_id) values (1, 'classic', 'classic model', 6);
+
+INSERT INTO assinged_characteristic_product(_value, product_id, characteristic_id) values ('blue', 1, 1);
+
+

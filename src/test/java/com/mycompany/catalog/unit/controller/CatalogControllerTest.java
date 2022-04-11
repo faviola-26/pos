@@ -8,10 +8,12 @@ import com.mycompany.catalog.exceptions.InvalidEntityException;
 import com.mycompany.catalog.model.Product;
 import com.mycompany.catalog.services.ProductService;
 import com.mycompany.catalog.util.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -32,30 +34,30 @@ import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-@TestPropertySource(locations="classpath:test_catalog.properties")
+@TestPropertySource(locations = "classpath:test_catalog.properties")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @AutoConfigureMockMvc
-public class CatalogControllerTest {  
-    
+public class CatalogControllerTest {
+
     @LocalServerPort
     private int port;
-    
+
     @Autowired
     private ObjectMapper mapper;
-    
+
     @Autowired
     private Product product;
-    
+
     private MockMvc mvc;
-    
+
     private URL url;
-    
+
     @Autowired
     private WebApplicationContext webApplicationContext;
-    
+
     @MockBean
     private ProductService service;
-    
+
     @BeforeAll
     public void setUp() {
         this.mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
@@ -64,74 +66,74 @@ public class CatalogControllerTest {
         mapper.enable(DeserializationFeature.USE_LONG_FOR_INTS);
         mapper.setSerializationInclusion(Include.NON_NULL);
     }
-    
+
     @BeforeEach
-    public void init(){
+    public void init() {
         product.setId(null);
         product.setName("Shoe");
         product.setDescription("Formal footware");
     }
-    
+
     @Test //Favi
-    public void given_user_provides_a_product_when_saving_product_then_should_pass() throws Exception{
+    public void given_user_provides_a_product_when_saving_product_then_should_pass() throws Exception {
 
         when(service.save(any(Product.class))).thenReturn(Long.getLong("1"));
-        
+
         mvc.perform(post(url.getSaveProduct())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(product))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
-    
+
     @Test
-    public void given_product_has_id_when_saving_then_should_fail() throws Exception{
+    public void given_product_has_id_when_saving_then_should_fail() throws Exception {
         //given
         product.setId(Long.valueOf("1"));
         when(service.save(any(Product.class))).thenThrow(InvalidEntityException.class);
-        
+
         mvc.perform(post(url.getSaveProduct())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(product))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity());
     }
-    
+
     @Test
-    public void given_product_name_hasnt_min_value_when_saving_then_should_fail() throws Exception{
+    public void given_product_name_hasnt_min_value_when_saving_then_should_fail() throws Exception {
         product.setName("a");
         when(service.save(any(Product.class))).thenThrow(InvalidEntityException.class);
-        
+
         mvc.perform(post(url.getSaveProduct())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(product))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity());
     }
-    
+
     @Test
-    public void given_product_name_hasnt_max_value_when_saving_then_should_fail() throws Exception{
+    public void given_product_name_hasnt_max_value_when_saving_then_should_fail() throws Exception {
         String name = "";
         //given
-        for(int i = 0; i < 52; i++){
+        for (int i = 0; i < 52; i++) {
             name += "a";
         }
         product.setName(name);
         when(service.save(any(Product.class))).thenThrow(InvalidEntityException.class);
         //then
-        
+
         mvc.perform(post(url.getSaveProduct())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(product))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity());
     }
-    
+
     @Test
-    public void given_product_description_hasnt_max_value_when_saving_then_should_fail() throws Exception{
+    public void given_product_description_hasnt_max_value_when_saving_then_should_fail() throws Exception {
         String description = "";
         //given
-        for(int i = 0; i < 102; i++){
+        for (int i = 0; i < 102; i++) {
             description += "a";
         }
         product.setDescription(description);
@@ -143,75 +145,140 @@ public class CatalogControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity());
     }
-    
+
     @Test
-    public void given_user_provides_an_id_when_request_product_by_id_then_should_pass() throws Exception{
+    public void given_user_provides_an_id_when_request_product_by_id_then_should_pass() throws Exception {
         Long id = Long.parseLong("1");
 
         when(service.getProductById(id)).thenReturn(any(Product.class));
-        
+
         mvc.perform(get(url.getFindProductById(id))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(product))
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());               
+                .andExpect(status().isOk());
     }
-    
+
     @Test
-    public void given_user_provides_no_id_when_request_product_by_id_then_should_fail() throws Exception{
+    public void given_user_provides_no_id_when_request_product_by_id_then_should_fail() throws Exception {
         //given
         Long id = null;
         when(service.getProductById(id)).thenThrow(EntityNotFoundException.class);
-        
+
         mvc.perform(get(url.getFindProductById(id))
-               .contentType(MediaType.APPLICATION_JSON)
-               .accept(MediaType.APPLICATION_JSON))
-               .andExpect(status().isNotFound());
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
-    
+
     @Test
-    public void given_user_provides_non_existent_id_when_request_product_by_id_then_should_fail() throws Exception{
+    public void given_user_provides_non_existent_id_when_request_product_by_id_then_should_fail() throws Exception {
         //given
         Long id = Long.getLong("100");
         when(service.getProductById(id)).thenThrow(EntityNotFoundException.class);
-        
+
         mvc.perform(get(url.getFindProductById(id))
-               .contentType(MediaType.APPLICATION_JSON)
-               .accept(MediaType.APPLICATION_JSON))
-               .andExpect(status().isNotFound());       
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
-    
+
     @Test
-    public void given_user_provides_an_id_when_request_product_by_category_id_then_should_pass(){
+    public void given_user_provides_an_id_when_request_product_by_category_id_then_should_pass() throws Exception {
         Long id = Long.parseLong("1");
+
+        when(service.findByCategory(id)).thenReturn((anyList()));
         
-        //when(service.findByCategory(id)).thenReturn(any(List<Product.class>));
+        mvc.perform(get(url.getFindProductByCategory(id))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
-    
+
     @Test
-    public void given_user_provides_no_id_when_request_product_by_category_then_should_fail() throws Exception{
+    public void given_user_provides_no_id_when_request_product_by_category_then_should_fail() throws Exception {
         //given
         Long id = null;
-        
+
         when(service.findByCategory(id)).thenThrow(EntityNotFoundException.class);
-        
+
         mvc.perform(get(url.getFindProductByCategory(id))
-               .contentType(MediaType.APPLICATION_JSON)
-               .accept(MediaType.APPLICATION_JSON))
-               .andExpect(status().isNotFound());
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void given_user_provides_non_existent_id_when_request_product_by_category_then_should_fail() throws Exception {
+        //given
+        Long id = Long.getLong("100");
+
+        when(service.findByCategory(id)).thenThrow(EntityNotFoundException.class);
+
+        mvc.perform(get(url.getFindProductByCategory(id))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void given_user_provides_an_id_when_request_product_by_characteristic_id_then_should_pass() throws Exception {
+        List<Integer> ids = new ArrayList<>();
+        List<String> values = new ArrayList<>();
+        ids.add(1);
+        values.add("blue");
         
+        when(service.findByCharacteristic(ids, values)).thenReturn(anyList());
+        
+        mvc.perform(get(url.getFindProductByCharacteristics(ids, values))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void given_user_provides_no_id_when_request_product_by_characteristic_then_should_fail() throws Exception {
+        List<Integer> ids = new ArrayList<>();
+        List<String> values = new ArrayList<>();
+        
+        when(service.findByCharacteristic(ids, values)).thenThrow(EntityNotFoundException.class);
+        
+        mvc.perform(get(url.getFindProductByCharacteristics(ids, values))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void given_user_provides_non_existent_id_when_request_product_by_characteristic_then_should_fail() throws Exception {
+        List<Integer> ids = new ArrayList<>();
+        List<String> values = new ArrayList<>();
+        
+        ids.add(100);
+        ids.add(200);
+        values.add("a");
+        values.add("b");
+
+        when(service.findByCharacteristic(ids, values)).thenThrow(EntityNotFoundException.class);
+
+        mvc.perform(get(url.getFindProductByCharacteristics(ids, values))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void given_user_provides_an_id_when_delete_product_then_should_pass() {
+
     }
     
     @Test
-    public void given_user_provides_non_existent_id_when_request_product_by_category_then_should_fail() throws Exception{
-        //given
-        Long id = Long.getLong("100");
-        
-        when(service.findByCategory(id)).thenThrow(EntityNotFoundException.class);
-        
-        mvc.perform(get(url.getFindProductByCategory(id))
-               .contentType(MediaType.APPLICATION_JSON)
-               .accept(MediaType.APPLICATION_JSON))
-               .andExpect(status().isNotFound());       
+    public void given_user_provides_a_null_id_when_delete_product_then_should_fail() {
+
+    }
+    
+    @Test
+    public void given_user_provides_non_existent_id_when_delete_product_then_should_fail() {
+
     }
 }
