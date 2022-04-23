@@ -6,10 +6,14 @@ import com.mycompany.catalog.model.Product;
 import com.mycompany.catalog.repository.ProductRepository;
 import com.mycompany.catalog.services.ProductService;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.any;
+import org.mockito.Mockito;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -149,6 +153,7 @@ public class ProductServiceTest {
     public void given_user_provides_no_id_when_request_product_then_should_fail(){
         //given
         Long id = null;
+        
         when(mockRepository.findById(id)).thenReturn(Optional.empty());
         Assertions.assertThrows(EntityNotFoundException.class, ()->{ 
             //when
@@ -176,5 +181,28 @@ public class ProductServiceTest {
         //then
         Product result = service.getProductById(id);
         Assertions.assertNotNull(result);
+    }
+    
+    @Test
+    public void given_user_provides_a_valid_product_when_update_product_then_should_pass(){
+        product.setId(Long.valueOf("1"));
+        product.setName("new shoe");
+        
+        System.out.println(service.findAll().size());
+        when(mockRepository.update(product)).thenReturn(any(Product.class));
+        Product update = service.update(product);
+        
+        Assertions.assertTrue(update.getName().equals(product.getName()));
+    }
+    
+    @Test
+    public void given_user_provides_an_invalid_product_name_when_update_product_then_should_fail(){
+        product.setName("a");
+        doThrow(ConstraintViolationException.class).when(mockRepository).update(product);
+        //then
+        Assertions.assertThrows(ConstraintViolationException.class, ()->{ 
+            service.update(product);
+        });
+                
     }
 }

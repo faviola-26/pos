@@ -1,5 +1,6 @@
 package com.mycompany.catalog.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +19,7 @@ public class ProductCharacteristic implements Serializable {
     @Id
     @ManyToOne
     @JoinColumn
+    @JsonIgnore
     private Product product;
     
     @Id

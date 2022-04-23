@@ -50,8 +50,8 @@ public class ProductService {
         return repository.findAll();
     }
 
-    public void update(Product product) {
-        repository.update(product);
+    public Product update(Product product) {
+        return repository.update(product);
     }
 
     public void delete(Long id) {

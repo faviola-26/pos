@@ -176,9 +176,7 @@ public class ProductRepositoryTest {
         //then
         Assertions.assertTrue(result.isEmpty());  
     }
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Test
     public void given_products_by_category_id_when_request_products_then_should_fail(){
         //given
@@ -222,16 +220,19 @@ public class ProductRepositoryTest {
     }
     
     @Test
-    public void given_user_name_hasnt_max_value_when_update_product_then_should_fail(){
-        String name = "";
-        
-        for(int i = 0; i < 102; i++){
-            name += "a";
-        }
+    public void given_user_valid_product_when_update_product_then_should_pass(){
+        String name = "aaaa";
+        product.setId(Long.valueOf("1"));
         product.setName(name);
+                   
+        repository.update(product);
+        Product updated = repository.findById(Long.valueOf("1")).get();
         
-        Assertions.assertThrows(InvalidEntityException.class, ()->{
-            repository.update(product);
-        });
+        Assertions.assertEquals(name, updated.getName());
+    }
+    
+    @Test
+    public void given_user_name_hasnt_max_value_when_update_product_then_should_fail(){
+        
     }
 }

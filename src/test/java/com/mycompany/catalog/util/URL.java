@@ -1,5 +1,6 @@
 package com.mycompany.catalog.util;
 
+import com.mycompany.catalog.model.Product;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;

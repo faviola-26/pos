@@ -12,16 +12,18 @@ public class CustomProductRepositoryImpl implements CustomProductRepository{
     private EntityManagerFactory factory;
     
     @Override
-    public void update(Product product) {
+    public Product update(Product product) {
         EntityManager manager = factory.createEntityManager();
+        Product updated = null;
         
         try{
             manager.getTransaction().begin();
-            manager.merge(product);
+            updated=manager.merge(product);
             manager.getTransaction().commit();
         }catch(ConstraintViolationException e){
             throw new InvalidEntityException(e.getMessage());
         }
+        return updated;        
     }
     
 }

@@ -14,6 +14,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
+import org.mockito.Mockito;
 import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,6 +28,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -228,7 +231,7 @@ public class CatalogControllerTest {
         ids.add(1);
         values.add("blue");
         
-        when(service.findByCharacteristic(ids, values)).thenReturn(anyList());
+        //when(service.findByCharacteristic(ids, values)).thenReturn(anyList(), eq(List<Product>));
         
         mvc.perform(get(url.getFindProductByCharacteristics(ids, values))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -268,17 +271,76 @@ public class CatalogControllerTest {
     }
 
     @Test
-    public void given_user_provides_an_id_when_delete_product_then_should_pass() {
-
+    public void given_user_provides_an_id_when_delete_product_then_should_pass() throws Exception {
+        Long id = Long.getLong("1");
+        
+        mvc.perform(delete(url.getDeleteProduct(id))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
     
     @Test
-    public void given_user_provides_a_null_id_when_delete_product_then_should_fail() {
-
+    public void given_user_provides_a_null_id_when_delete_product_then_should_fail() throws Exception {
+        Long id = null;
+        
+        //when(service.delete(id)).thenThrow(EntityNotFoundException.class);
+        Mockito.doThrow(EntityNotFoundException.class).when(service).delete(id);
+        
+        mvc.perform(delete(url.getDeleteProduct(id))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
     
     @Test
-    public void given_user_provides_non_existent_id_when_delete_product_then_should_fail() {
-
+    public void given_user_provides_non_existent_id_when_delete_product_then_should_fail() throws Exception {
+        Long id = Long.getLong("100");
+        
+        Mockito.doThrow(EntityNotFoundException.class).when(service).delete(id);
+        
+        mvc.perform(delete(url.getDeleteProduct(id))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+    
+    @Test
+    public void given_user_provides_a_product_when_update_product_then_should_pass() throws Exception {
+        product.setId(Long.valueOf("1"));
+        product.setName("No classic");
+        product.setDescription("");
+        
+        Mockito.doNothing().when(service).update(product);
+        
+        mvc.perform(put(url.getUpdateProduct())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(product))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+    
+    @Test
+    public void given_user_provides_a_null_product_when_update_product_then_should_fail() throws Exception {
+        
+        Mockito.doThrow(EntityNotFoundException.class).when(service).update(any(Product.class));
+        
+        mvc.perform(put(url.getUpdateProduct())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(product))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }    
+    
+    @Test
+    public void given_user_provides_a_null_id_product_when_update_product_then_should_fail() throws Exception {
+        
+        Mockito.doThrow(EntityNotFoundException.class).when(service).update(any(Product.class));
+        
+        mvc.perform(put(url.getUpdateProduct())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(product))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }
