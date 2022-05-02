@@ -3,7 +3,6 @@ package com.mycompany.catalog.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.mycompany.catalog.util.GroupsValidation;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
