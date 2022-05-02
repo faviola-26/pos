@@ -24,8 +24,8 @@ INSERT INTO product_characteristic(id, name, type, format, value_interpreter, de
 INSERT INTO product_characteristic(id, name, type, format, value_interpreter, description) values (null, 'Season', 6, 'season_name', 1, 'season of the year');
 
 INSERT INTO product(id, name, description, category_id) values (1, 'black converse', 'classic model converse', 6);
-INSERT INTO product(id, name, description, category_id) values (1, 'classic woman', 'classic high heel', 8);
-INSERT INTO product(id, name, description, category_id) values (1, 'fresh beach', 'blue flipflops', 10);
+INSERT INTO product(id, name, description, category_id) values (2, 'classic woman', 'classic high heel', 8);
+INSERT INTO product(id, name, description, category_id) values (3, 'fresh beach', 'blue flipflops', 10);
 
 INSERT INTO assinged_characteristic_product(_value, product_id, characteristic_id) values ('black', 1, 1);
 INSERT INTO assinged_characteristic_product(_value, product_id, characteristic_id) values ('3-6', 1, 2);

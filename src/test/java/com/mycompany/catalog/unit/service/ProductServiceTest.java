@@ -189,7 +189,7 @@ public class ProductServiceTest {
         product.setName("new shoe");
         
         System.out.println(service.findAll().size());
-        when(mockRepository.update(product)).thenReturn(any(Product.class));
+        when(mockRepository.update(product)).thenReturn(product);
         Product update = service.update(product);
         
         Assertions.assertTrue(update.getName().equals(product.getName()));

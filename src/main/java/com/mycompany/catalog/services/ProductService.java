@@ -19,6 +19,9 @@ public class ProductService {
 
     public Long save(Product product) throws InvalidEntityException {
         try {
+            if (product.getId() != null) {
+                product.setId(null);
+            }
             return repository.save(product).getId();
         } catch (InvalidDataAccessApiUsageException e) {
             throw new InvalidEntityException(ServiceErrors.ID_NOT_ASSIGNABLE);
@@ -33,13 +36,13 @@ public class ProductService {
         }
     }
 
-     public List<Product> findByCategory(Long idCategory) throws EntityNotFoundException{
+    public List<Product> findByCategory(Long idCategory) throws EntityNotFoundException {
         if (!repository.findByCategory(idCategory).isEmpty()) {
             return repository.findByCategory(idCategory);
         } else {
             throw new EntityNotFoundException(ServiceErrors.PRODUCT_NOT_FOUND + idCategory);
         }
-        
+
     }
 
     public List<Product> findByCharacteristic(List<Integer> idCharacteristic, List<String> valuesCharacteristic) {

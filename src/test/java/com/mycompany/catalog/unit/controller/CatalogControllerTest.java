@@ -311,7 +311,7 @@ public class CatalogControllerTest {
         product.setName("No classic");
         product.setDescription("");
         
-        Mockito.doNothing().when(service).update(product);
+        when(service.update(product)).thenReturn(product);
         
         mvc.perform(put(url.getUpdateProduct())
                 .contentType(MediaType.APPLICATION_JSON)
